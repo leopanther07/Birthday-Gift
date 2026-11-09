@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday Meri Jaan!</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Canvas Confetti Library -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <!-- Tone.js for soft melodic audio effects -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background: linear-gradient(135deg, #ffe6eb 0%, #def3ff 50%, #f9e6ff 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .font-cursive {
+            font-family: 'Dancing Script', cursive;
+        }
+
+        /* Glassmorphism utility */
+        .glass {
+            background: rgba(255, 255, 255, 0.65);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.9);
+            box-shadow: 0 20px 40px rgba(255, 182, 193, 0.3);
+        }
+
+        /* Floating background elements */
+        .floating-heart {
+            position: absolute;
+            pointer-events: none;
+            animation: floatUp 8s linear infinite;
+            opacity: 0.7;
+        }
+
+        @keyframes floatUp {
+            0% {
+                transform: translateY(100vh) rotate(0deg) scale(0.6);
+                opacity: 0;
+            }
+            20% {
+                opacity: 0.8;
+            }
+            80% {
+                opacity: 0.8;
+            }
+            100% {
+                transform: translateY(-10vh) rotate(360deg) scale(1.2);
+                opacity: 0;
+            }
+        }
+
+        /* Pulse and Sparkle Animations */
+        @keyframes gentlePulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .animate-gentle-pulse {
+            animation: gentlePulse 2.5s infinite ease-in-out;
+        }
+
+        /* Card Flip & Unfold Animation */
+        .gift-box {
+            transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+        }
+
+        .gift-box:hover {
+            transform: scale(1.03) translateY(-5px);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #ffe6eb;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #fda4af;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body class="text-gray-800 relative pb-16">
+
+    <!-- Floating Background Canvas for extra sparkle -->
+    <div id="floating-hearts-container" class="fixed inset-0 overflow-hidden pointer-events-none z-0"></div>
+
+    <!-- Music/Sound Controls Top Bar -->
+    <header class="relative z-20 max-w-5xl mx-auto px-4 pt-6 flex justify-between items-center">
+        <div class="flex items-center space-x-2 glass px-4 py-2 rounded-full shadow-sm">
+            <span class="text-xl">👑</span>
+            <span class="font-bold text-pink-600 tracking-wide text-sm sm:text-base">To Meri Beautiful(Sugli) Wifey🤗</span>
+        </div>
+
+        <button id="soundToggle" onclick="toggleAudio()" class="glass px-4 py-2 rounded-full shadow-md flex items-center space-x-2 text-pink-600 hover:bg-white transition-all text-sm sm:text-base">
+            <i id="soundIcon" class="fas me-1 fa-music"></i>
+            <span id="soundText">Play Music ✨</span>
+        </button>
+    </header>
+
+    <!-- Main Container -->
+    <main class="relative z-10 max-w-4xl mx-auto px-4 mt-6">
+
+        <!-- Hero Card -->
+        <section class="glass-card rounded-3xl p-6 sm:p-10 text-center mb-8 relative overflow-hidden">
+            <!-- Decorative corner elements -->
+            <div class="absolute -top-10 -right-10 w-32 h-32 bg-pink-200 rounded-full blur-2xl opacity-60"></div>
+            <div class="absolute -bottom-10 -left-10 w-32 h-32 bg-purple-200 rounded-full blur-2xl opacity-60"></div>
+
+            <div class="relative z-10">
+                <span class="inline-block px-4 py-1.5 bg-pink-100 text-pink-600 font-semibold rounded-full text-xs sm:text-sm tracking-wider uppercase mb-3 shadow-inner">
+                    ✨ Aaj Aapka Special Day Hai🥰🥳 ✨
+                </span>
+                <h1 class="text-4xl sm:text-6xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 font-cursive py-2">
+                    Happy Birthday, Mera Bachcha! 😭🫂💖
+                </h1>
+                <p class="text-gray-600 mt-2 text-sm sm:text-base max-w-xl mx-auto">
+                    Aap meri life ki sabse khoobsurat gift ho. Aaj ke din hi mere pyaar ka janm hua tha, mere saath kalesh karne ke liye🫣😁🫂!
+                </p>
+
+                <!-- Action Button for Big Celebration -->
+                <div class="mt-6 flex flex-wrap justify-center gap-3">
+                    <button onclick="triggerMegaConfetti()" class="bg-gradient-to-r from-pink-500 to-rose-400 hover:from-pink-600 hover:to-rose-500 text-white font-bold py-3 px-6 rounded-full shadow-lg shadow-pink-300/50 hover:shadow-xl transform hover:-translate-y-0.5 active:translate-y-0 transition-all flex items-center space-x-2 text-sm sm:text-base">
+                        <i class="fas fa-gift text-lg"></i>
+                        <span>Blow Confetti 🎉</span>
+                    </button>
+                    <button onclick="triggerHeartRain()" class="bg-white text-pink-600 hover:bg-pink-50 border border-pink-200 font-semibold py-3 px-6 rounded-full shadow-md hover:shadow-lg transition-all flex items-center space-x-2 text-sm sm:text-base">
+                        <i class="fas fa-heart text-pink-500 text-lg"></i>
+                        <span>rain of hearts💗💕</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Interactive Gift Card Section (Click to Unwrap) -->
+        <section class="mb-10">
+            <div id="giftCard" onclick="unwrapCard()" class="gift-box glass-card rounded-3xl p-8 sm:p-12 text-center border-2 border-pink-200 relative overflow-hidden group">
+                
+                <!-- Sealed Gift State -->
+                <div id="giftSealed" class="py-6 flex flex-col items-center">
+                    <div class="w-24 h-24 sm:w-28 sm:h-28 bg-gradient-to-tr from-pink-400 to-purple-400 rounded-3xl flex items-center justify-center text-white text-4xl sm:text-5xl shadow-xl mb-4 animate-gentle-pulse group-hover:scale-110 transition-transform">
+                        🎁
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-800">Aapke Liye Ek Secret Letter!🙈🎀</h3>
+                    <p class="text-pink-500 font-medium text-sm mt-1">GIFT KHOLO 👉 Tap to unwrap 💌</p>
+                </div>
+
+                <!-- Unfolded Secret Message State (Hidden initially) -->
+                <div id="giftUnfolded" class="hidden text-left py-2 transition-all duration-700 opacity-0 transform translate-y-4">
+                    <div class="flex items-center justify-between border-b border-pink-100 pb-4 mb-4">
+                        <div class="flex items-center space-x-3">
+                            <span class="text-3xl">💌</span>
+                            <div>
+                                <h3 class="text-xl font-bold text-pink-600">Meri Pyari Wifey Ke Naam🙈</h3>
+                                <p class="text-xs text-gray-400">Written With Core Of Bottom Of My Heart🥺</p>
+                            </div>
+                        </div>
+                        <span class="text-pink-400 text-sm font-semibold">Forever & Always</span>
+                    </div>
+
+                    <div class="space-y-4 text-gray-700 leading-relaxed text-sm sm:text-base font-medium">
+                        <p>
+                            Meri Pyari Jaan,
+                        </p>
+                        <p>
+                            Aaj ke iss khass din par, main aapko yeh batana chahta hoon ki aap mere liye kitni precious ho. Aapke saath bitaya har ek moment meri life ka sabse khoobsurat hissa hai. Aapki smile, haaayeee😭kya kehne uske😭🫶🏻jee karta bas dekhta rahu poore time🥹🫶🏻🫂!
+                        </p>
+                        <p>
+                            Thank you meri best friend, meri partner aur meri sabse achhi support system banne ke liye. Main bhagwaan jii se yahi pray karta hoon ki yeh naya saal aapke liye dher saari khushiyan, peace aur success lekar aaye. AAp hamesha aise hi muskurati raho, khush raho, aur hamesh meri raho😋😁🫂! Asli gift to mujhe meri saasu maa ne diya aaj se 17 saal pahle😋🙈🫂mmy ko thank you bolna, mujhe meri biwi dene ke liye😁🫂!!
+                        </p>
+                        <p class="text-right font-cursive text-2xl text-pink-600 font-bold pt-2">
+                            Boht saara pyar & hugs 😭🫂❤️
+                        </p>
+                    </div>
+
+                    <div class="mt-6 pt-4 border-t border-pink-100 flex justify-center">
+                        <button onclick="event.stopPropagation(); triggerSparkles();" class="text-xs bg-pink-100 hover:bg-pink-200 text-pink-700 px-4 py-2 rounded-full font-semibold transition">
+                            ✨ pyaar ki baarish👀 ✨
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Romantic Reasons/Promises Grid -->
+        <section class="mb-10">
+            <h2 class="text-2xl sm:text-3xl font-bold text-center text-gray-800 font-cursive mb-6">
+                waise aapki saari baate mujhe pasand hai, ginte ginte bday nikal jaayega, isliye 2-4 baat hi karunga🙂🫂
+            </h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <!-- Card 1 -->
+                <div class="glass-card rounded-2xl p-5 hover:border-pink-300 transition-all">
+                    <div class="w-10 h-10 bg-pink-100 text-pink-500 rounded-full flex items-center justify-center text-xl mb-3">
+                        🌟
+                    </div>
+                    <h4 class="font-bold text-gray-800 mb-1">Aapka mere liye obsession👀🫶🏻</h4>
+                    <p class="text-xs sm:text-sm text-gray-600">Jis tarah se aap mere liye obsessed ho, aur mujhpe aap bas apna haq chahte ho, hayeee yrr😭🙈🫂.</p>
+                </div>
+                <!-- Card 2 -->
+                <div class="glass-card rounded-2xl p-5 hover:border-pink-300 transition-all">
+                    <div class="w-10 h-10 bg-purple-100 text-purple-500 rounded-full flex items-center justify-center text-xl mb-3">
+                        😊
+                    </div>
+                    <h4 class="font-bold text-gray-800 mb-1">Aapki wo Pyaari si Smile😭🫶🏻</h4>
+                    <p class="text-xs sm:text-sm text-gray-600">Aap jab haste ho toh aap aur meri poori duniya aur bhi khoobsurat lagne lagti hai🥹🫶🏻.</p>
+                </div>
+                <!-- Card 3 -->
+                <div class="glass-card rounded-2xl p-5 hover:border-pink-300 transition-all">
+                    <div class="w-10 h-10 bg-rose-100 text-rose-500 rounded-full flex items-center justify-center text-xl mb-3">
+                        ☕
+                    </div>
+                    <h4 class="font-bold text-gray-800 mb-1">Humari Roz Ki Baatein</h4>
+                    <p class="text-xs sm:text-sm text-gray-600">Subah ki good morning se lekar raat ki good night tak, aapke saath har baat aur kalesh special hai.</p>
+                </div>
+            </div>
+        </section>
+
+               <!-- Birthday Wishes Wishbox Button -->
+        <section class="text-center py-6">
+            <div class="glass inline-block px-8 py-6 rounded-3xl max-w-lg w-full shadow-lg border border-white">
+                <h3 class="text-xl font-bold text-gray-800 mb-2">Ek Wish Maango! 🎂</h3>
+                <p class="text-xs text-gray-500 mb-4">Aankhein band karo, ek pyari si wish socho aur candle bujhao!</p>
+                
+                <button id="candleBtn" onclick="blowCandle()" class="w-20 h-20 bg-gradient-to-tr from-amber-200 to-yellow-400 rounded-full shadow-lg hover:shadow-yellow-300/50 flex items-center justify-center text-3xl mx-auto transform active:scale-95 transition-all">
+                    🕯️
+                </button>
+                <p id="wishText" class="text-xs font-semibold text-pink-600 mt-3 h-4"></p>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="text-center py-6 text-xs text-gray-500 relative z-10">
+        Dil se banaya gaya hai meri pyari wifey ke liye ❤️ |Happiest return of the day my love🥺🫂 !
+    </footer>
+
+    <!-- JavaScript Logic -->
+    <script>
+        // ----------------------------------------------------
+        // Floating Hearts Animation Background Generator
+        // ----------------------------------------------------
+        function createFloatingHearts() {
+            const container = document.getElementById('floating-hearts-container');
+            const heartEmojis = ['💖', '🌸', '✨', '💕', '💗', '🌺'];
+            
+            for (let i = 0; i < 20; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'floating-heart';
+                heart.innerText = heartEmojis[Math.floor(Math.random() * heartEmojis.length)];
+                heart.style.left = Math.random() * 100 + 'vw';
+                heart.style.animationDuration = (6 + Math.random() * 6) + 's';
+                heart.style.animationDelay = (Math.random() * 5) + 's';
+                heart.style.fontSize = (16 + Math.random() * 16) + 'px';
+                container.appendChild(heart);
+            }
+        }
+
+        // ----------------------------------------------------
+        // Interactive Gift Card Unwrap
+        // ----------------------------------------------------
+        let isUnwrapped = false;
+        function unwrapCard() {
+            if (isUnwrapped) return;
+            isUnwrapped = true;
+
+            const sealed = document.getElementById('giftSealed');
+            const unfolded = document.getElementById('giftUnfolded');
+            const card = document.getElementById('giftCard');
+
+            // Play celebratory melody
+            playSweetChime();
+
+            // Fire confetti burst right over the card
+            triggerMegaConfetti();
+
+            // Animate transition
+            sealed.style.display = 'none';
+            unfolded.classList.remove('hidden');
+            
+            setTimeout(() => {
+                unfolded.classList.remove('opacity-0', 'translate-y-4');
+                unfolded.classList.add('opacity-100', 'translate-y-0');
+            }, 50);
+
+            card.classList.remove('hover:scale-103');
+            card.style.cursor = 'default';
+        }
+
+        // ----------------------------------------------------
+        // Canvas Confetti Effects
+        // ----------------------------------------------------
+        function triggerMegaConfetti() {
+            playPopSound();
+            const duration = 2.5 * 1000;
+            const animationEnd = Date.now() + duration;
+            const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 1000 };
+
+            function randomInRange(min, max) {
+                return Math.random() * (max - min) + min;
+            }
+
+            const interval = setInterval(function() {
+                const timeLeft = animationEnd - Date.now();
+                if (timeLeft <= 0) {
+                    return clearInterval(interval);
+                }
+                const particleCount = 50 * (timeLeft / duration);
+                
+                // Confetti from two sides
+                confetti(Object.assign({}, defaults, { 
+                    particleCount, 
+                    origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 },
+                    colors: ['#ff85a2', '#ffb3c6', '#f72585', '#7209b7', '#4cc9f0']
+                }));
+                confetti(Object.assign({}, defaults, { 
+                    particleCount, 
+                    origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 },
+                    colors: ['#ff85a2', '#ffb3c6', '#f72585', '#7209b7', '#4cc9f0']
+                }));
+            }, 250);
+        }
+
+        function triggerHeartRain() {
+            playPopSound();
+            const scalar = 2;
+            const unicorn = confetti.shapeFromText({ text: '💖', scalar });
+
+            confetti({
+                shapes: [unicorn],
+                scalar,
+                particleCount: 30,
+                spread: 100,
+                origin: { y: 0.4 },
+                colors: ['#ff4d6d', '#ff758f', '#ffb3c6']
+            });
+        }
+
+        function triggerSparkles() {
+            playPopSound();
+            const scalar = 1.5;
+            const star = confetti.shapeFromText({ text: '✨', scalar });
+
+            confetti({
+                shapes: [star],
+                scalar,
+                particleCount: 25,
+                spread: 80,
+                origin: { y: 0.6 }
+            });
+        }
+
+        function blowCandle() {
+            const btn = document.getElementById('candleBtn');
+            const wishText = document.getElementById('wishText');
+
+            btn.innerText = '🎂';
+            wishText.innerText = '✨ Aapki wish zaroor poori hogi! Happiest Birthday Betuu🥳🎀🫂! ✨';
+            
+            triggerMegaConfetti();
+            playSweetChime();
+        }
+
+        // ----------------------------------------------------
+        // Tone.js Audio Synth for Soft Melody & FX
+        // ----------------------------------------------------
+        let isAudioPlaying = false;
+        let polySynth = null;
+        let melodyLoop = null;
+
+        function initTone() {
+            if (!polySynth) {
+                polySynth = new Tone.PolySynth(Tone.Synth, {
+                    oscillator: { type: "sine" },
+                    envelope: { attack: 0.1, decay: 0.2, sustain: 0.5, release: 1 }
+                }).toDestination();
+                polySynth.volume.value = -12;
+            }
+        }
+
+        function toggleAudio() {
+            initTone();
+            Tone.start();
+
+            const soundIcon = document.getElementById('soundIcon');
+            const soundText = document.getElementById('soundText');
+
+            if (!isAudioPlaying) {
+                isAudioPlaying = true;
+                soundIcon.className = 'fas me-1 fa-pause';
+                soundText.innerText = 'Music Roko 🎵';
+
+                const notes = ["C4", "E4", "G4", "B4", "C5", "G4", "E4", "A4"];
+                let step = 0;
+
+                melodyLoop = setInterval(() => {
+                    if (isAudioPlaying && polySynth) {
+                        polySynth.triggerAttackRelease(notes[step % notes.length], "8n");
+                        step++;
+                    }
+                }, 400);
+
+            } else {
+                isAudioPlaying = false;
+                soundIcon.className = 'fas me-1 fa-music';
+                soundText.innerText = 'Play Music ✨';
+                if (melodyLoop) clearInterval(melodyLoop);
+            }
+        }
+
+        function playSweetChime() {
+            try {
+                initTone();
+                Tone.start();
+                const now = Tone.now();
+                polySynth.triggerAttackRelease("C5", "8n", now);
+                polySynth.triggerAttackRelease("E5", "8n", now + 0.15);
+                polySynth.triggerAttackRelease("G5", "8n", now + 0.3);
+                polySynth.triggerAttackRelease("C6", "4n", now + 0.45);
+            } catch (e) {
+                // Audio context fallback
+            }
+        }
+
+        function playPopSound() {
+            try {
+                initTone();
+                Tone.start();
+                polySynth.triggerAttackRelease("G5", "16n");
+            } catch(e) {}
+        }
+
+        // Initial setup on page load
+        window.onload = function() {
+            createFloatingHearts();
+            // Initial subtle burst on load after short delay
+            setTimeout(() => {
+                confetti({
+                    particleCount: 25,
+                    spread: 60,
+                    origin: { y: 0.7 },
+                    colors: ['#ffb3c6', '#fda4af', '#f472b6']
+                });
+            }, 800);
+        };
+    </script>
+</body>
+</html>
